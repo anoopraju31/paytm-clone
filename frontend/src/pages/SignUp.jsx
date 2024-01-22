@@ -46,7 +46,7 @@ const SignUp = () => {
 					<Button title='Sign Up' type='submit' />
 				</form>
 
-				<div className='text-center text text-orange-700'>
+				<div className='text-center text-sm text-orange-700 py-2 px-6 hover:bg-orange-600 hover:text-orange-100 rounded-lg transition-colors duration-300 ease-in'>
 					<Link to='/sign-in'> Already have an account? </Link>
 				</div>
 			</section>
