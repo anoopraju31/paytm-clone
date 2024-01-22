@@ -1,5 +1,5 @@
 import { atom, selector } from 'recoil'
-import { checkIsAuthenticated, getBalance } from '../helpers'
+import { checkIsAuthenticated, getBalance, getUsers } from '../helpers'
 
 export const authAtom = atom({
 	key: 'authAtom',
@@ -29,4 +29,17 @@ export const balanceAtom = atom({
 export const searchUserAtom = atom({
 	key: 'searchUserAtom',
 	default: '',
+})
+
+export const usersListAtom = atom({
+	key: 'usersListAtom',
+	default: selector({
+		key: 'userListSelector',
+		get: async ({ get }) => {
+			const username = get(searchUserAtom)
+			const users = await getUsers(username)
+
+			return users
+		},
+	}),
 })

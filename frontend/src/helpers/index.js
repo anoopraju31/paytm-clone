@@ -42,3 +42,16 @@ export const getBalance = async () => {
 		return 0
 	}
 }
+
+export const getUsers = async (username) => {
+	try {
+		const response = await instance.get(
+			`${BASE_URL}/user/bulk?filter=${username}`,
+		)
+
+		return response.data.users
+	} catch (error) {
+		console.error(error)
+		return []
+	}
+}
