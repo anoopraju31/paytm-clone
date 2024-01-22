@@ -29,6 +29,11 @@ const signUpController = async (req, res) => {
 	res.json({ message: 'Successfully signed up', token })
 }
 
+const signInController = async (req, res) => {
+	res.json({ message: 'Successfully signed in' })
+}
+
 module.exports = {
 	signUpController,
+	signInController,
 }

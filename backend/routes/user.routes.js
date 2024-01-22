@@ -1,5 +1,8 @@
 const { Router } = require('express')
-const { signUpController } = require('../controllers/user.controllers')
+const {
+	signUpController,
+	signInController,
+} = require('../controllers/user.controllers')
 
 const router = Router()
 
@@ -8,5 +11,6 @@ router.get('/', (req, res) => {
 })
 
 router.post('/sign-up', signUpController)
+router.post('/sign-in', signInController)
 
 module.exports = router
