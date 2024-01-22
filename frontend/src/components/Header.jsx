@@ -1,9 +1,9 @@
 import { useRecoilStateLoadable } from 'recoil'
 import { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FaRegCircleUser } from 'react-icons/fa6'
 import Button from '../components/Button'
 import { authAtom } from '../store/atom'
+import Avatar from './Avatar'
 
 const Header = () => {
 	return (
@@ -29,13 +29,15 @@ const UserProfile = () => {
 
 	if (auth.state !== 'hasValue' || !auth.contents) return null
 
+	const avatar = `${auth.contents.firstName[0]}${auth.contents.lastName[0]}`
+
 	return (
 		<div className='flex gap-4 items-center text-orange-900'>
 			<p> Hello, {auth.contents.firstName} </p>
-			<div onClick={toggleUserMenu} className='text-2xl relative '>
-				<FaRegCircleUser />
+			<div onClick={toggleUserMenu} className='text-xl relative '>
+				<Avatar title={avatar} />
 				{showUserMenu ? (
-					<div className='p-2 flex justify-center items-center bg-orange-300 rounded-lg absolute top-12 right-0'>
+					<div className='p-2 flex justify-center items-center bg-orange-200 rounded-lg absolute top-12 right-0'>
 						<Button title='Logout' handleClick={logout} />
 					</div>
 				) : null}
