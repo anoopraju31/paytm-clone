@@ -14,7 +14,7 @@ const Home = () => {
 	}, [navigate, auth])
 
 	return (
-		<main className='min-h-screen bg-orange-100 py-20'>
+		<main className='min-h-screen relative bg-orange-100 py-20'>
 			<Balance />
 			<Banking />
 		</main>
