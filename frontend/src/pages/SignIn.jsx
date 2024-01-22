@@ -1,19 +1,23 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useRecoilStateLoadable } from 'recoil'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
 import { BASE_URL } from '../helpers'
-import { useSetRecoilState } from 'recoil'
 import { authAtom } from '../store/atom'
 
 const SignIn = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
-	const setAuth = useSetRecoilState(authAtom)
+	const [auth, setAuth] = useRecoilStateLoadable(authAtom)
 	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (auth.contents) navigate('/')
+	}, [auth, navigate])
 
 	const handleEmailChange = useCallback((e) => setEmail(e.target.value), [])
 	const handlePasswordChange = useCallback(
@@ -33,12 +37,15 @@ const SignIn = () => {
 			setEmail('')
 			setPassword('')
 
-			toast.success(response.data.message)
-			localStorage.setItem('token', response.data.token)
-			setAuth(true)
-			navigate('/')
+			const { message, id, username, firstName, lastName, token, auth } =
+				response.data
+
+			toast.success(message)
+			localStorage.setItem('token', token)
+			setAuth({ id, username, firstName, lastName, auth })
 		} catch (error) {
 			toast.error(error.response.data.message)
+			setAuth(null)
 		} finally {
 			setIsSubmitting(false)
 		}
