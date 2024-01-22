@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { signUpSchema } = require('../helpers/validations')
+const { signUpSchema, signInSchema } = require('../helpers/validations')
 const User = require('../models/user.models')
 require('dotenv').config()
 
@@ -30,7 +30,23 @@ const signUpController = async (req, res) => {
 }
 
 const signInController = async (req, res) => {
-	res.json({ message: 'Successfully signed in' })
+	const { username, password } = req.body
+	const { success } = signInSchema.safeParse(req.body)
+
+	if (!success) return res.status(411).json({ message: 'Incorrect inputs' })
+
+	const user = await User.findOne({ username }).select('+password')
+
+	if (!user) return res.status(411).json({ message: 'Email not found' })
+
+	const isValidPassword = await bcrypt.compare(password, user.password)
+
+	if (!isValidPassword)
+		return res.status(411).json({ message: 'Incorrect password' })
+
+	const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
+
+	res.json({ message: 'User successfully login', token })
 }
 
 module.exports = {
