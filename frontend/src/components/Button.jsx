@@ -1,6 +1,7 @@
+import { memo } from 'react'
 import PropTypes from 'prop-types'
 
-const Button = (props) => {
+const Button = memo((props) => {
 	const { title, type, isDisabled, handleClick, style } = props
 	return (
 		<button
@@ -11,7 +12,9 @@ const Button = (props) => {
 			{title}
 		</button>
 	)
-}
+})
+
+Button.displayName = 'Button'
 
 Button.propTypes = {
 	title: PropTypes.string.isRequired,
