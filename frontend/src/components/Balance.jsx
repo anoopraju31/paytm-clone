@@ -6,7 +6,7 @@ const Balance = () => {
 	if (balance.state !== 'hasValue') return null
 	return (
 		<section className='border-t border-orange-800 p-10'>
-			<h2 className='font-mono font-bold text-xl text-orange-800'>
+			<h2 className='p-6 font-mono font-bold text-xl text-orange-800 bg-orange-200 rounded-xl'>
 				Your Balance: {balance.contents}
 			</h2>
 		</section>
