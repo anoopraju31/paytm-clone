@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
+import { memo } from 'react'
 
-const InputField = (props) => {
+const InputField = memo((props) => {
 	const {
 		id,
 		name,
@@ -28,7 +29,9 @@ const InputField = (props) => {
 			/>
 		</>
 	)
-}
+})
+
+InputField.displayName = 'InputField'
 
 InputField.propTypes = {
 	name: PropTypes.string.isRequired,
