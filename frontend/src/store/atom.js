@@ -25,3 +25,8 @@ export const balanceAtom = atom({
 		},
 	}),
 })
+
+export const searchUserAtom = atom({
+	key: 'searchUserAtom',
+	default: '',
+})
