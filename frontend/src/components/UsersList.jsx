@@ -1,5 +1,6 @@
 import { useRecoilValueLoadable } from 'recoil'
 import { usersListAtom } from '../store/atom'
+import User from './User'
 
 const UsersList = () => {
 	const users = useRecoilValueLoadable(usersListAtom)
@@ -19,12 +20,10 @@ const UsersList = () => {
 		)
 
 	return (
-		<div className='px-10'>
+		<>
 			{users.state === 'hasValue' &&
-				users.contents.map((user) => (
-					<p key={user?._id}> {user?.firstName} </p>
-				))}
-		</div>
+				users.contents.map((user) => <User key={user?._id} user={user} />)}
+		</>
 	)
 }
 
