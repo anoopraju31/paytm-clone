@@ -2,6 +2,8 @@ const express = require('express')
 const mainRoutes = require('./routes/index')
 require('dotenv').config()
 
+mongoose.connect(process.env.MONGODB_URI)
+
 const app = express()
 const PORT = process.env.PORT || 5500
 
