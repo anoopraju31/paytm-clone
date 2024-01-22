@@ -1,6 +1,10 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { signUpSchema, signInSchema } = require('../helpers/validations')
+const {
+	signUpSchema,
+	signInSchema,
+	updateSchema,
+} = require('../helpers/validations')
 const User = require('../models/user.models')
 require('dotenv').config()
 
@@ -57,7 +61,23 @@ const signInController = async (req, res) => {
 	res.json({ message: 'User successfully login', token })
 }
 
+const updateController = async (req, res) => {
+	const { error } = updateSchema.safeParse(req.body)
+
+	if (error)
+		return res.status(411).json({
+			status: 'error',
+			message: error.issues[0].message,
+		})
+
+	const user = await User.updateOne({ _id: req.userId }, req.body)
+	console.log(user)
+
+	res.json({ message: 'Updated successfully' })
+}
+
 module.exports = {
 	signUpController,
 	signInController,
+	updateController,
 }
