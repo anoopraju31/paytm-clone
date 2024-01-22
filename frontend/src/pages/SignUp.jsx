@@ -1,8 +1,60 @@
-import { Link } from 'react-router-dom'
+import { useCallback, useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
+import { BASE_URL } from '../helpers'
 
 const SignUp = () => {
+	const [firstName, setFirstName] = useState('')
+	const [lastName, setLastName] = useState('')
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const navigate = useNavigate()
+	const handleFirstNameChange = useCallback(
+		(e) => setFirstName(e.target.value),
+		[],
+	)
+	const handleLastNameChange = useCallback(
+		(e) => setLastName(e.target.value),
+		[],
+	)
+	const handleEmailChange = useCallback((e) => setEmail(e.target.value), [])
+	const handlePasswordChange = useCallback(
+		(e) => setPassword(e.target.value),
+		[],
+	)
+
+	const handleSubmit = async (e) => {
+		try {
+			e.preventDefault()
+			setIsSubmitting(true)
+
+			const response = await axios.post(`${BASE_URL}/user/sign-up`, {
+				firstName,
+				lastName,
+				username: email,
+				password,
+			})
+
+			setFirstName('')
+			setLastName('')
+			setEmail('')
+			setPassword('')
+
+			toast.success(response.data.message)
+			localStorage.setItem('token', response.data.token)
+
+			navigate('/')
+		} catch (error) {
+			toast.error(error.response.data.message)
+		} finally {
+			setIsSubmitting(false)
+		}
+	}
+
 	return (
 		<main className='min-h-screen flex justify-center items-center bg-orange-100'>
 			<section className='w-full max-w-md p-10 rounded-xl border border-orange-500 font-mono'>
@@ -10,13 +62,16 @@ const SignUp = () => {
 					Sign Up
 				</h1>
 
-				<form className='mb-6 flex flex-col gap-5'>
+				<form onSubmit={handleSubmit} className='mb-6 flex flex-col gap-5'>
 					<InputField
 						id='firstName'
 						name='firstName'
 						label='First Name'
 						type='text'
 						placeholder='Enter your first name'
+						value={firstName}
+						handleChange={handleFirstNameChange}
+						isDisabled={isSubmitting}
 					/>
 
 					<InputField
@@ -25,6 +80,9 @@ const SignUp = () => {
 						label='Last Name'
 						type='text'
 						placeholder='Enter your last name'
+						value={lastName}
+						handleChange={handleLastNameChange}
+						isDisabled={isSubmitting}
 					/>
 
 					<InputField
@@ -33,6 +91,9 @@ const SignUp = () => {
 						label='Email'
 						type='email'
 						placeholder='Enter your email'
+						value={email}
+						handleChange={handleEmailChange}
+						isDisabled={isSubmitting}
 					/>
 
 					<InputField
@@ -41,9 +102,12 @@ const SignUp = () => {
 						label='Password'
 						type='password'
 						placeholder='Enter your password'
+						value={password}
+						handleChange={handlePasswordChange}
+						isDisabled={isSubmitting}
 					/>
 
-					<Button title='Sign Up' type='submit' />
+					<Button title='Sign Up' type='submit' isDisabled={isSubmitting} />
 				</form>
 
 				<Link

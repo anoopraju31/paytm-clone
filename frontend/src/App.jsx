@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import Header from './components/Header'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
@@ -13,6 +14,7 @@ const App = () => {
 				<Route path='/sign-in' element={<SignIn />} />
 				<Route path='/' element={<Home />} />
 			</Routes>
+			<Toaster />
 		</BrowserRouter>
 	)
 }
