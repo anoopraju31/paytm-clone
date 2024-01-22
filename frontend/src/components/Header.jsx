@@ -30,13 +30,16 @@ const UserProfile = () => {
 	if (auth.state !== 'hasValue' || !auth.contents) return null
 
 	return (
-		<div onClick={toggleUserMenu} className='text-2xl relative text-orange-900'>
-			<FaRegCircleUser />
-			{showUserMenu ? (
-				<div className='p-2 flex justify-center items-center bg-orange-300 rounded-lg absolute top-12 right-0'>
-					<Button title='Logout' handleClick={logout} />
-				</div>
-			) : null}
+		<div className='flex gap-4 items-center text-orange-900'>
+			<p> Hello, {auth.contents.firstName} </p>
+			<div onClick={toggleUserMenu} className='text-2xl relative '>
+				<FaRegCircleUser />
+				{showUserMenu ? (
+					<div className='p-2 flex justify-center items-center bg-orange-300 rounded-lg absolute top-12 right-0'>
+						<Button title='Logout' handleClick={logout} />
+					</div>
+				) : null}
+			</div>
 		</div>
 	)
 }
