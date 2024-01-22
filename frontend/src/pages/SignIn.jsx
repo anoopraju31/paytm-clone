@@ -5,11 +5,14 @@ import toast from 'react-hot-toast'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
 import { BASE_URL } from '../helpers'
+import { useSetRecoilState } from 'recoil'
+import { authAtom } from '../store/atom'
 
 const SignIn = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const setAuth = useSetRecoilState(authAtom)
 	const navigate = useNavigate()
 
 	const handleEmailChange = useCallback((e) => setEmail(e.target.value), [])
@@ -32,6 +35,7 @@ const SignIn = () => {
 
 			toast.success(response.data.message)
 			localStorage.setItem('token', response.data.token)
+			setAuth(true)
 			navigate('/')
 		} catch (error) {
 			toast.error(error.response.data.message)
