@@ -32,3 +32,13 @@ export const checkIsAuthenticated = async () => {
 		return null
 	}
 }
+
+export const getBalance = async () => {
+	try {
+		const response = await instance.get(`${BASE_URL}/account/balance`)
+		return response.data.balance
+	} catch (error) {
+		console.error(error)
+		return 0
+	}
+}
