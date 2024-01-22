@@ -9,8 +9,6 @@ const Account = require('../models/acount.models')
 const { generateToken } = require('../helpers/jwt')
 require('dotenv').config()
 
-const JWT_SECRET = process.env.JWT_SECRET
-
 const signUpController = async (req, res) => {
 	const { username, firstName, lastName, password } = req.body
 	const { error } = signUpSchema.safeParse(req.body)
@@ -44,7 +42,15 @@ const signUpController = async (req, res) => {
 
 	const token = generateToken(userId)
 
-	res.json({ message: 'Successfully signed up', token })
+	res.json({
+		message: 'Successfully signed up',
+		id: userId,
+		username,
+		firstName,
+		lastName,
+		token,
+		auth: true,
+	})
 }
 
 const signInController = async (req, res) => {
@@ -61,6 +67,7 @@ const signInController = async (req, res) => {
 
 	if (!user) return res.status(411).json({ message: 'Email not found' })
 
+	const { _id: id, firstName, lastName } = user
 	const isValidPassword = await bcrypt.compare(password, user.password)
 
 	if (!isValidPassword)
@@ -68,7 +75,15 @@ const signInController = async (req, res) => {
 
 	const token = generateToken(user._id)
 
-	res.json({ message: 'User successfully login', token })
+	res.json({
+		message: 'User successfully login',
+		id,
+		username,
+		firstName,
+		lastName,
+		token,
+		auth: true,
+	})
 }
 
 const updateController = async (req, res) => {
@@ -101,9 +116,15 @@ const bulkUserController = async (req, res) => {
 	res.json({ users })
 }
 
+const userController = async (req, res) => {
+	const user = await User.findOne({ _id: req.userId })
+	res.json(user)
+}
+
 module.exports = {
 	signUpController,
 	signInController,
 	updateController,
 	bulkUserController,
+	userController,
 }
