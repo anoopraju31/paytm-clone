@@ -6,9 +6,13 @@ require('dotenv').config()
 
 const signUpController = async (req, res) => {
 	const { username, firstName, lastName, password } = req.body
-	const { success } = signUpSchema.safeParse(req.body)
+	const { error } = signUpSchema.safeParse(req.body)
 
-	if (!success) return res.status(411).json({ message: 'Incorrect inputs' })
+	if (error)
+		return res.status(411).json({
+			status: 'error',
+			message: error.issues[0].message,
+		})
 
 	const existingUser = await User.findOne({ username })
 
