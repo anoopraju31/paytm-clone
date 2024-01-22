@@ -1,10 +1,12 @@
 import { useCallback, useState } from 'react'
+import { useSetRecoilState } from 'recoil'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
 import { BASE_URL } from '../helpers'
+import { authAtom } from '../store/atom'
 
 const SignUp = () => {
 	const [firstName, setFirstName] = useState('')
@@ -12,7 +14,9 @@ const SignUp = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const setAuth = useSetRecoilState(authAtom)
 	const navigate = useNavigate()
+
 	const handleFirstNameChange = useCallback(
 		(e) => setFirstName(e.target.value),
 		[],
@@ -46,7 +50,7 @@ const SignUp = () => {
 
 			toast.success(response.data.message)
 			localStorage.setItem('token', response.data.token)
-
+			setAuth(true)
 			navigate('/')
 		} catch (error) {
 			toast.error(error.response.data.message)
