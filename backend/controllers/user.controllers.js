@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const {
 	signUpSchema,
 	signInSchema,
@@ -7,7 +6,10 @@ const {
 } = require('../helpers/validations')
 const User = require('../models/user.models')
 const Account = require('../models/acount.models')
+const { generateToken } = require('../helpers/jwt')
 require('dotenv').config()
+
+const JWT_SECRET = process.env.JWT_SECRET
 
 const signUpController = async (req, res) => {
 	const { username, firstName, lastName, password } = req.body
@@ -40,7 +42,7 @@ const signUpController = async (req, res) => {
 		balance: 1 + Math.ceil(Math.random() * 1000000),
 	})
 
-	const token = jwt.sign({ userId }, process.env.JWT_SECRET)
+	const token = generateToken(userId)
 
 	res.json({ message: 'Successfully signed up', token })
 }
@@ -64,7 +66,7 @@ const signInController = async (req, res) => {
 	if (!isValidPassword)
 		return res.status(411).json({ message: 'Incorrect password' })
 
-	const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
+	const token = generateToken(user._id)
 
 	res.json({ message: 'User successfully login', token })
 }
