@@ -13,7 +13,7 @@ const Home = () => {
 	}, [navigate, auth])
 
 	return (
-		<main className='min-h-screen bg-orange-100 py-20 px-10'>
+		<main className='min-h-screen bg-orange-100 py-20'>
 			<Balance />
 		</main>
 	)
