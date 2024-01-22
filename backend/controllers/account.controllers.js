@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Account = require('../models/acount.models')
+const { transferSchema } = require('../helpers/validations')
 
 const balanceController = async (req, res) => {
 	const account = await Account.findOne({ userId: req.userId })
@@ -12,6 +13,14 @@ const balanceController = async (req, res) => {
 const transferController = async (req, res) => {
 	const userId = req.userId
 	const { amount, to } = req.body
+	const { error } = transferSchema.safeParse(req.body)
+
+	if (error)
+		return res.status(411).json({
+			status: 'error',
+			message: error.issues[0].message,
+		})
+
 	const session = await mongoose.startSession()
 
 	// Fetch the accounts within the transaction
