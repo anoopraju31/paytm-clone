@@ -5,7 +5,7 @@ import InputField from '../components/InputField'
 const SignUp = () => {
 	return (
 		<main className='min-h-screen flex justify-center items-center bg-orange-100'>
-			<section className='w-full max-w-md p-10 rounded-xl shadow-xl font-mono'>
+			<section className='w-full max-w-md p-10 rounded-xl border border-orange-500 font-mono'>
 				<h1 className='text-3xl text-center mb-10 font-bold text-orange-800'>
 					Sign Up
 				</h1>
