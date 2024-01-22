@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { useCallback, useEffect, useState } from 'react'
+import { useRecoilStateLoadable } from 'recoil'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -14,8 +14,12 @@ const SignUp = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
-	const setAuth = useSetRecoilState(authAtom)
+	const [auth, setAuth] = useRecoilStateLoadable(authAtom)
 	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (auth.contents) navigate('/')
+	}, [auth, navigate])
 
 	const handleFirstNameChange = useCallback(
 		(e) => setFirstName(e.target.value),
@@ -48,12 +52,15 @@ const SignUp = () => {
 			setEmail('')
 			setPassword('')
 
-			toast.success(response.data.message)
-			localStorage.setItem('token', response.data.token)
-			setAuth(true)
-			navigate('/')
+			const { message, id, username, firstName, lastName, token, auth } =
+				response.data
+
+			toast.success(message)
+			localStorage.setItem('token', token)
+			setAuth({ id, username, firstName, lastName, auth })
 		} catch (error) {
 			toast.error(error.response.data.message)
+			setAuth(null)
 		} finally {
 			setIsSubmitting(false)
 		}
