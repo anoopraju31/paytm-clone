@@ -7,6 +7,12 @@ const signUpSchema = zod.object({
 	password: zod.string(),
 })
 
+const signInSchema = zod.object({
+	username: zod.string().email(),
+	password: zod.string(),
+})
+
 module.exports = {
 	signUpSchema,
+	signInSchema,
 }
