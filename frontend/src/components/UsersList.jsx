@@ -1,14 +1,30 @@
-import UserSearchForm from './UserSearchForm'
+import { useRecoilValueLoadable } from 'recoil'
+import { usersListAtom } from '../store/atom'
 
 const UsersList = () => {
-	return (
-		<section className='px-10'>
-			<h2 className='text-2xl text-orange-800 font-extrabold font-mono'>
-				Users
-			</h2>
+	const users = useRecoilValueLoadable(usersListAtom)
 
-			<UserSearchForm />
-		</section>
+	if (users.state === 'loading')
+		return (
+			<div className='py-10 text-center text-lg text-orange-800 font-mono'>
+				Loading...
+			</div>
+		)
+
+	if (!users.contents.length)
+		return (
+			<div className='py-10 text-center text-lg text-orange-800 font-mono'>
+				No user found!
+			</div>
+		)
+
+	return (
+		<div className='px-10'>
+			{users.state === 'hasValue' &&
+				users.contents.map((user) => (
+					<p key={user?._id}> {user?.firstName} </p>
+				))}
+		</div>
 	)
 }
 
