@@ -8,6 +8,11 @@ const balanceController = async (req, res) => {
 	res.json({ balance: account.balance })
 }
 
+const transferController = async (req, res) => {
+	res.json({ message: 'Transfer route' })
+}
+
 module.exports = {
 	balanceController,
+	transferController,
 }
