@@ -7,7 +7,7 @@ import Avatar from './Avatar'
 
 const Header = () => {
 	return (
-		<header className='fixed top-0 left-0 w-full p-5 md:px-10 font-mono backdrop-blur-lg flex justify-between items-center'>
+		<header className='fixed top-0 left-0 right-0 z-50 w-full p-5 md:px-10 font-mono backdrop-blur-lg flex justify-between items-center'>
 			<div className='text-xl md:text-2xl font-bold text-orange-900'>
 				<Link to='/'> PayTM </Link>
 			</div>
