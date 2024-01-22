@@ -1,7 +1,7 @@
 const zod = require('zod')
 
 const signUpSchema = zod.object({
-	username: zod.ZodString().email(),
+	username: zod.string().email(),
 	firstName: zod.string(),
 	lastName: zod.string(),
 	password: zod.string(),
