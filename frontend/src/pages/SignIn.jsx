@@ -1,10 +1,48 @@
-import { Link } from 'react-router-dom'
+import { useCallback, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
+import { BASE_URL } from '../helpers'
 
 const SignIn = () => {
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const navigate = useNavigate()
+
+	const handleEmailChange = useCallback((e) => setEmail(e.target.value), [])
+	const handlePasswordChange = useCallback(
+		(e) => setPassword(e.target.value),
+		[],
+	)
+	const handleSubmit = async (e) => {
+		try {
+			e.preventDefault()
+			setIsSubmitting(true)
+
+			const response = await axios.post(`${BASE_URL}/user/sign-in`, {
+				username: email,
+				password,
+			})
+
+			setEmail('')
+			setPassword('')
+
+			toast.success(response.data.message)
+			localStorage.setItem('token', response.data.token)
+			navigate('/')
+		} catch (error) {
+			toast.error(error.response.data.message)
+		} finally {
+			setIsSubmitting(false)
+		}
+	}
 	return (
-		<main className='min-h-screen flex justify-center items-center bg-orange-100'>
+		<main
+			onSubmit={handleSubmit}
+			className='min-h-screen flex justify-center items-center bg-orange-100'>
 			<section className='w-full max-w-md p-10 rounded-xl border border-orange-500  font-mono'>
 				<h1 className='text-3xl text-center mb-10 font-bold text-orange-800'>
 					Sign In
@@ -17,6 +55,9 @@ const SignIn = () => {
 						label='Email'
 						type='email'
 						placeholder='Enter your email'
+						value={email}
+						handleChange={handleEmailChange}
+						isDisabled={isSubmitting}
 					/>
 
 					<InputField
@@ -25,6 +66,9 @@ const SignIn = () => {
 						label='Password'
 						type='password'
 						placeholder='Enter your password'
+						value={password}
+						handleChange={handlePasswordChange}
+						isDisabled={isSubmitting}
 					/>
 
 					<Button title='Sign In' type='submit' />
