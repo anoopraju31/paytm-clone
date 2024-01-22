@@ -20,10 +20,10 @@ const UsersList = () => {
 		)
 
 	return (
-		<>
+		<div className='flex flex-col gap-1'>
 			{users.state === 'hasValue' &&
 				users.contents.map((user) => <User key={user?._id} user={user} />)}
-		</>
+		</div>
 	)
 }
 
