@@ -11,8 +11,9 @@ const User = ({ user }) => {
 			<div className='w-full flex items-center gap-6'>
 				<Avatar title={avatar} />
 
-				<h4 className='text-lg font-mono font-bold whitespace-nowrap text-orange-800 group-hover:text-orange-700 capitalize'>
-					{firstName} {lastName}
+				<h4 className='text-lg font-mono font-bold whitespace-nowrap text-orange-800 group-hover:text-orange-700 capitalize truncate'>
+					<span>{firstName}</span>{' '}
+					<span className='hidden sm:inline-block '>{lastName}</span>
 				</h4>
 			</div>
 
