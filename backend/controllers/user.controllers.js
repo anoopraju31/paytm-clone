@@ -35,9 +35,13 @@ const signUpController = async (req, res) => {
 
 const signInController = async (req, res) => {
 	const { username, password } = req.body
-	const { success } = signInSchema.safeParse(req.body)
+	const { error } = signInSchema.safeParse(req.body)
 
-	if (!success) return res.status(411).json({ message: 'Incorrect inputs' })
+	if (error)
+		return res.status(411).json({
+			status: 'error',
+			message: error.issues[0].message,
+		})
 
 	const user = await User.findOne({ username }).select('+password')
 
