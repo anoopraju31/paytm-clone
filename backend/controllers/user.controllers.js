@@ -6,6 +6,7 @@ const {
 	updateSchema,
 } = require('../helpers/validations')
 const User = require('../models/user.models')
+const Account = require('../models/acount.models')
 require('dotenv').config()
 
 const signUpController = async (req, res) => {
@@ -32,7 +33,14 @@ const signUpController = async (req, res) => {
 		firstName,
 		lastName,
 	})
-	const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
+	const userId = user._id
+
+	await Account.create({
+		userId,
+		balance: 1 + Math.ceil(Math.random() * 1000000),
+	})
+
+	const token = jwt.sign({ userId }, process.env.JWT_SECRET)
 
 	res.json({ message: 'Successfully signed up', token })
 }
