@@ -43,3 +43,13 @@ export const usersListAtom = atom({
 		},
 	}),
 })
+
+export const isModelOpenAtom = atom({
+	key: 'isModelOpenAtom',
+	default: false,
+})
+
+// export const sendMoneyAtom = atom({
+// 	key: 'sendMoneyAtom',
+// 	default: null,
+// })
