@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import SignUp from './pages/SignUp'
+
 const App = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/' element={<h1> Home </h1>} />
+				<Route path='/sign-up' element={<SignUp />} />
 				<Route path='/about' element={<h1> About </h1>} />
 			</Routes>
 		</BrowserRouter>
