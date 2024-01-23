@@ -11,14 +11,25 @@ export const authAtom = atom({
 	}),
 })
 
+export const isModelOpenAtom = atom({
+	key: 'isModelOpenAtom',
+	default: false,
+})
+
+export const sendMoneyAtom = atom({
+	key: 'sendMoneyAtom',
+	default: null,
+})
+
 export const balanceAtom = atom({
 	key: 'balanceAtom',
 	default: selector({
 		key: 'balanceSelector',
 		get: async ({ get }) => {
 			const auth = get(authAtom)
+			const transferMoney = get(sendMoneyAtom)
 
-			if (!auth) return 0
+			if (!auth || transferMoney) return 0
 
 			const balance = await getBalance()
 			return balance
@@ -43,13 +54,3 @@ export const usersListAtom = atom({
 		},
 	}),
 })
-
-export const isModelOpenAtom = atom({
-	key: 'isModelOpenAtom',
-	default: false,
-})
-
-// export const sendMoneyAtom = atom({
-// 	key: 'sendMoneyAtom',
-// 	default: null,
-// })
