@@ -1,15 +1,19 @@
+import { useSetRecoilState } from 'recoil'
 import PropTypes from 'prop-types'
+import { isModelOpenAtom, sendMoneyAtom } from '../store/atom'
 import Button from './Button'
 import Avatar from './Avatar'
-import { useSetRecoilState } from 'recoil'
-import { isModelOpenAtom } from '../store/atom'
 
 const User = ({ user }) => {
 	const { firstName, lastName } = user
 	const setIsModelOpen = useSetRecoilState(isModelOpenAtom)
+	const setSendMoney = useSetRecoilState(sendMoneyAtom)
 	const avatar = `${firstName[0]}${lastName[0]}`
 
-	const handleClick = () => setIsModelOpen(true)
+	const handleClick = () => {
+		setIsModelOpen(true)
+		setSendMoney(user)
+	}
 
 	return (
 		<div className='group p-2 flex justify-between items-center gap-6 rounded-lg hover:bg-orange-200 transition-colors duration-500 ease-in-out'>
@@ -25,7 +29,7 @@ const User = ({ user }) => {
 			<Button
 				title='Send Money'
 				handleClick={handleClick}
-				style='! w-fit whitespace-nowrap group-hover:bg-orange-400'
+				style='!w-fit whitespace-nowrap group-hover:bg-orange-400'
 			/>
 		</div>
 	)
